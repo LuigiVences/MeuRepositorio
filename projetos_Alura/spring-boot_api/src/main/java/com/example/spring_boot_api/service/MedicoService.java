@@ -1,0 +1,64 @@
+package com.example.spring_boot_api.service;
+
+import com.example.spring_boot_api.models.Medico;
+import com.example.spring_boot_api.repository.MedicoRepository;
+import com.example.spring_boot_api.web.DadosMedicoDTO;
+import com.example.spring_boot_api.web.ListMedicoDTO;
+import com.example.spring_boot_api.web.UpdateMedicoDTO;
+import com.example.spring_boot_api.web.UpdatePessoaDTO;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
+public class MedicoService {
+
+    private final MedicoRepository medicoRepository;
+
+    public MedicoService(MedicoRepository medicoRepository) {
+        this.medicoRepository = medicoRepository;
+    }
+
+    public void cadastrarMedico(@Valid DadosMedicoDTO dadosMedicoDTO) {
+        medicoRepository.save(new Medico(dadosMedicoDTO));
+    }
+
+    public Page<ListMedicoDTO> listarMedicosDTO(Pageable pageable) {
+        return medicoRepository.findAllByAtivoTrue(pageable).map(ListMedicoDTO::new);
+    }
+
+
+    private boolean existeMedico(Long id){
+        var existe = medicoRepository.existsById(id);
+        return existe;
+    }
+
+    public ResponseEntity<?> atualizaMedico(UpdatePessoaDTO updatePessoaDTO){
+        var existe = existeMedico(updatePessoaDTO.id());
+        if (existe) {
+            var medico = medicoRepository.getReferenceById(updatePessoaDTO.id());
+            medico.atualizaInformacoes(updatePessoaDTO);
+            return ResponseEntity.ok(new UpdateMedicoDTO(medico));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Médico com ID " + updatePessoaDTO.id() + " não encontrado.");
+        }
+    }
+
+    public ResponseEntity<?> deletarMedico(Long id){
+        var existe = existeMedico(id);
+        if (existe) {
+            var medico = medicoRepository.getReferenceById(id);
+            medico.desativarMedico();
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Médico com ID " + id+ " não encontrado.");
+        }
+    }
+}
