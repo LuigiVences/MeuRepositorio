@@ -24,8 +24,9 @@ public class MedicoService {
         this.medicoRepository = medicoRepository;
     }
 
-    public void cadastrarMedico(@Valid DadosMedicoDTO dadosMedicoDTO) {
-        medicoRepository.save(new Medico(dadosMedicoDTO));
+    public Medico cadastrarMedico(@Valid DadosMedicoDTO dadosMedicoDTO) {
+       var medico = medicoRepository.save(new Medico(dadosMedicoDTO));
+       return medico;
     }
 
     public Page<ListMedicoDTO> listarMedicosDTO(Pageable pageable) {
