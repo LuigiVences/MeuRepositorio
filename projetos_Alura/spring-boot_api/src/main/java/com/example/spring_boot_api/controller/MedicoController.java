@@ -47,12 +47,17 @@ public class  MedicoController {
                                                            @PathVariable Long id){
        return medicoService.atualizaMedico(updatePessoaDTO);
     }
-    //Por padrão, o http devolve o código 2044 pra dizer que a requisição foi processada com sucesso
+    //Por padrão, o http devolve o código 204 pra dizer que a requisição foi processada com sucesso
     //e que não possui um corpo
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<?> deletarMedico(@PathVariable Long id){
         return medicoService.deletarMedico(id);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> detalharMedico (@RequestBody @PathVariable Long id) {
+        return medicoService.detalharMedico(id);
     }
 }

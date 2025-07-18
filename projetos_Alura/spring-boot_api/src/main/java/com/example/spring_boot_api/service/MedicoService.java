@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class MedicoService {
@@ -60,6 +61,16 @@ public class MedicoService {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Médico com ID " + id+ " não encontrado.");
+        }
+    }
+
+    public ResponseEntity<?> detalharMedico(Long id) {
+        var existe = existeMedico(id);
+        if (existe){
+            var medico = medicoRepository.findById(id);
+            return ResponseEntity.ok(new UpdateMedicoDTO(medico));
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

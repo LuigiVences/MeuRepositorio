@@ -1,5 +1,6 @@
 package com.example.spring_boot_api.models;
 import com.example.spring_boot_api.web.DadosMedicoDTO;
+import com.example.spring_boot_api.web.UpdateMedicoDTO;
 import com.example.spring_boot_api.web.UpdatePessoaDTO;
 import jakarta.persistence.*;
 
@@ -72,4 +73,5 @@ public class Medico extends Pessoa {
 
         this.ativo = false;
     }
+
 }
