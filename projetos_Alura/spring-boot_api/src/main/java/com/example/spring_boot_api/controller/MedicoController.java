@@ -43,7 +43,7 @@ public class  MedicoController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> atualizarMedico(@RequestBody @Valid UpdatePessoaDTO updatePessoaDTO,
+    public ResponseEntity atualizarMedico(@RequestBody @Valid UpdatePessoaDTO updatePessoaDTO,
                                                            @PathVariable Long id){
        return medicoService.atualizaMedico(updatePessoaDTO);
     }
@@ -52,12 +52,12 @@ public class  MedicoController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> deletarMedico(@PathVariable Long id){
+    public ResponseEntity deletarMedico(@PathVariable Long id){
         return medicoService.deletarMedico(id);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> detalharMedico (@RequestBody @PathVariable Long id) {
+    public ResponseEntity detalharMedico (@RequestBody @PathVariable Long id) {
         return medicoService.detalharMedico(id);
     }
 }

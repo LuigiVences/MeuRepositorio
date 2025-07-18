@@ -35,42 +35,24 @@ public class MedicoService {
     }
 
 
-    private boolean existeMedico(Long id){
-        var existe = medicoRepository.existsById(id);
-        return existe;
-    }
-
     public ResponseEntity<?> atualizaMedico(UpdatePessoaDTO updatePessoaDTO){
-        var existe = existeMedico(updatePessoaDTO.id());
-        if (existe) {
+
             var medico = medicoRepository.getReferenceById(updatePessoaDTO.id());
             medico.atualizaInformacoes(updatePessoaDTO);
             return ResponseEntity.ok(new UpdateMedicoDTO(medico));
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Médico com ID " + updatePessoaDTO.id() + " não encontrado.");
-        }
+
     }
 
-    public ResponseEntity<?> deletarMedico(Long id){
-        var existe = existeMedico(id);
-        if (existe) {
+    public ResponseEntity deletarMedico(Long id){
             var medico = medicoRepository.getReferenceById(id);
             medico.desativarMedico();
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Médico com ID " + id+ " não encontrado.");
-        }
+
     }
 
-    public ResponseEntity<?> detalharMedico(Long id) {
-        var existe = existeMedico(id);
-        if (existe){
-            var medico = medicoRepository.findById(id);
+    public ResponseEntity detalharMedico(Long id) {
+            var medico = medicoRepository.getReferenceById(id);
             return ResponseEntity.ok(new UpdateMedicoDTO(medico));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
     }
 }
