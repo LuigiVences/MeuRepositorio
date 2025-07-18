@@ -51,7 +51,7 @@ public class MedicoService {
     }
 
     public ResponseEntity detalharMedico(Long id) {
-            var medico = medicoRepository.findById(id);
+            var medico = medicoRepository.getReferenceById(id);
             return ResponseEntity.ok(new UpdateMedicoDTO(medico));
 
     }
